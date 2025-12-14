@@ -12,14 +12,14 @@ function setup() {
     //windowWidth,windowHeightを使うと画面全体にキャンバスの大きさを指定できる．
     createCanvas(windowWidth, windowHeight);
    genField();
-   frameRate(60);
 }
 
 function draw() {
-    time += deltaTime;
-    teim = time*60;
+   frameRate(60);
+    time = deltaTime;
+    time = time*frameRate()/1000;
    console.log(frameRate());
-    // console.log(time);
+    console.log(time);
     // console.log(frameCount)
     background(220);
     strokeWeight(1);
