@@ -1,13 +1,13 @@
-let cellsize = 80;
+let cellsize, xs, ys;
 let x = 0;
 let y = 0;
-let xs = 0;
-let ys = 0;
 let field = [];
+let circlesize = 0.8;
 let turn = 1;
 let goodcell = [];
 let checklist = [1, -1, 10, -10, 9, -9, 11, -11];
 let okiteasist = 1;
+let asistcircle = 0.5;
 let beforasist = 1;
 let befor = null;
 
@@ -16,16 +16,14 @@ function setup() {
     createCanvas(windowWidth, windowHeight);
     cellSizeSetter();
     genField();
-    console.log(field);
 }
 
 function draw() {
     mouse();
     background("green");
     // cell();
-    fill(0);
-    stone();
     selectCheck();
+    stone();
 }
 
 function genField() {
@@ -42,26 +40,27 @@ function genField() {
     field[45] = 1;
 }
 
-/*
 function cell() {
     for (let i = 0; i < Math.floor(windowWidth / cellsize); i++) {
         for (let g = 0; g < Math.floor(windowHeight / cellsize); g++) {
             // fill(255 * ((i + g + 1) % 2));
             fill("green")
+            if ((i + g) % 2 == 0) {
+                fill("#00ff00")
+            } else {
+                fill("#005500");
+            }
             noStroke();
             rect(i * cellsize + xs, g * cellsize + ys, cellsize);
         }
     }
 }
-    */
 
 function stone() {
-    // fill(220)
-    // noFill();
-    strokeWeight(3);
+    strokeWeight(cellsize * 0.04);
     for (let i = 0; i < 8; i++) {
         for (let g = 0; g < 8; g++) {
-                    stroke(220);
+            stroke(220);
             switch (Math.floor(field[i * 10 + g + 1])) {
                 case 0:
                     fill(0);
@@ -69,17 +68,22 @@ function stone() {
                 case 1:
                     fill(255);
                     break;
-                case 3:
-                    fill("red");
+                case -3:
+                    fill("grey");
+                    noStroke();
+                    circle(g * cellsize + cellsize / 2 + xs, i * cellsize + cellsize / 2 + ys, cellsize * asistcircle);
+                    field[i * 10 + g + 1] = -1
+                    stroke(220);
+                    noFill();
                     break;
                 default:
                     noFill();
                     break;
             }
-            if(i * 10 + g + 1 == befor && beforasist == 1) {
-                    stroke("yellow");
+            if (i * 10 + g + 1 == befor && beforasist == 1) {
+                stroke("yellow");
             }
-            circle(g * cellsize + cellsize / 2 + xs, i * cellsize + cellsize / 2 + ys, cellsize - 10);
+            circle(g * cellsize + cellsize / 2 + xs, i * cellsize + cellsize / 2 + ys, cellsize * circlesize);
         }
     }
 }
@@ -118,9 +122,7 @@ function selectCheck() {
             for (let g = 0; g < checklist.length; g++) {
                 if (checker(i, checklist[g]) == 1) {
                     if (okiteasist == 1) {
-                        fill("grey");
-                        noStroke();
-                        circle((i % 10 - 1) * cellsize + cellsize / 2 + xs, Math.floor(i / 10) * cellsize + cellsize / 2 + ys, cellsize - 50);
+                        field[i] = -3
                     }
                     goodcell.push(i);
 
@@ -142,22 +144,22 @@ function checker(i, angle) {
 
         }
     }
+
+    return 0;
 }
 
 function windowResized() {
-    // print("ウィンドウサイズの変更");
     resizeCanvas(windowWidth, windowHeight);
     cellSizeSetter();
 }
 
-function cellSizeSetter(){
-    
-    if(windowWidth>windowHeight){
-        cellsize = windowHeight/10;
-    }else{
-        cellsize = windowWidth/10;
+function cellSizeSetter() {
 
+    if (windowWidth > windowHeight) {
+        cellsize = windowHeight / 10;
+    } else {
+        cellsize = windowWidth / 10;
     }
-    xs = windowWidth/2 -cellsize*4
-    ys = windowHeight/2 -cellsize*4
+    xs = windowWidth / 2 - cellsize * 4
+    ys = windowHeight / 2 - cellsize * 4
 }
