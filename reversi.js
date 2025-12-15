@@ -96,6 +96,8 @@ function mouse() {
 
 function mousePressed() {
     let temp = x + y * 10 + 1
+    selectCell(temp);
+    /*
     if (goodcell.indexOf(temp) != -1) {
         befor = temp;
         turnstone(temp);
@@ -103,12 +105,28 @@ function mousePressed() {
         turn = abs(turn - 1);
         goodcell = [];
     }
+        */
+}
+
+function selectCell(temp){
+    if (goodcell.indexOf(temp) != -1) {
+        befor = temp;
+        turnstone(temp);
+        field[temp] = turn;
+        turn = abs(turn - 1);
+        goodcell = [];
+        // console.log("change colect!!");
+    }
+    /*
+    else{
+        // console.log("change faild");
+    }
+        */
 }
 
 function turnstone(cell) {
     for (let i = 0; i < checklist.length; i++) {
         if (checker(cell, checklist[i]) == 1) {
-            console.log(cell)
             for (let g = 1; field[cell + checklist[i] * g] != turn; g++) {
                 field[cell + checklist[i] * g] = turn;
             }
