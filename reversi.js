@@ -1,4 +1,5 @@
 let cellsize, xs, ys;
+let state = 0;
 let x = 0;
 let y = 0;
 let field = [];
@@ -10,20 +11,64 @@ let okiteasist = 1;
 let asistcircle = 0.5;
 let beforasist = 1;
 let befor = null;
+let skip = 0;
+let stop = 0;
+let selectcell = 0;
+let mouselp = 0;
 
 
 function setup() {
     createCanvas(windowWidth, windowHeight);
     cellSizeSetter();
     genField();
+    textAlign(CENTER,CENTER);
 }
 
 function draw() {
+    console.log(turn)
     mouse();
     background("green");
     // cell();
-    selectCheck();
+    switch (state) {
+        case 0:
+            selectCheck();
+            getSelect();
+            Cellchanger();
+            break;
+        case 1:
+            break;
+        case 2:
+            if (skip == 0) {
+                stop = frameCount;
+                skip = 1;
+            }
+            if (frameCount - stop >= 100) {
+                state = 0;
+            }
+            break;
+            case 3:
+                break;
+    }
     stone();
+    if(state == 2){
+            fill(255);
+            rect(windowWidth/2-75, windowHeight/2-50, 150, 100, 30);
+            fill(0);
+            textSize(30);
+            text("SKIP", windowWidth/2, windowHeight/2);
+        
+    }
+    changeturn();
+    /*
+    if (skip == 1) {
+        rect(windowWidth, windowHeight, 150, 100);
+        text("SKIP", windowWidth, windowHeight);
+        skip == 2
+        state = 0;
+        // turn = abs(turn -1);
+    }
+        */
+
 }
 
 function genField() {
@@ -94,34 +139,85 @@ function mouse() {
     y = Math.floor((mouseY - ys) / cellsize);
 }
 
-function mousePressed() {
-    let temp = x + y * 10 + 1
-    selectCell(temp);
-    /*
-    if (goodcell.indexOf(temp) != -1) {
-        befor = temp;
-        turnstone(temp);
-        field[temp] = turn;
-        turn = abs(turn - 1);
-        goodcell = [];
+function getSelect(){
+    if(mouselp == 1){
+        mouselp = 0;
+    if (keyIsPressed == true) {
+        switch (key) {
+            case 0:
+                field[x + y * 10 + 1] = 0;
+                console.log(1)
+            case 1:
+                field[x + y * 10 + 1] = 1;
+                console.log(1)
+            default:
+                selectcell = x + y * 10 + 1
+        }
+    } else {
+        selectcell = x + y * 10 + 1
+
     }
-        */
+
+    }
 }
 
-function selectCell(temp){
+function mouseReleased() {
+    mouselp = 1;
+
+    /*
+    if (keyIsPressed == true) {
+        console.log(0)
+        switch (key) {
+            case 0:
+                field[x + y * 10 + 1] = 0;
+                console.log(1)
+            case 1:
+                field[x + y * 10 + 1] = 1;
+                console.log(1)
+            default:
+                selectcell = x + y * 10 + 1
+        }
+    } else {
+        selectcell = x + y * 10 + 1
+
+    }
+*/
+
+    // selectCell(temp);
+    /*
     if (goodcell.indexOf(temp) != -1) {
         befor = temp;
         turnstone(temp);
         field[temp] = turn;
         turn = abs(turn - 1);
         goodcell = [];
-        // console.log("change colect!!");
     }
-    /*
-    else{
+         */
+}
+
+// function mouseReleased(){
+    // mouselp = 0;
+// }
+
+
+function Cellchanger() {
+    if (selectcell != 0) {
+        selectCell(selectcell);
+    }
+}
+
+function selectCell(temp) {
+    if (goodcell.indexOf(temp) != -1) {
+        befor = temp;
+        turnstone(temp);
+        field[temp] = turn;
+        // turn = abs(turn - 1);
+        goodcell = [];
+        // console.log("change colect!!");
+    } else {
+        selectcell = 0;
         // console.log("change faild");
     }
-        */
 }
 
 function turnstone(cell) {
@@ -141,14 +237,19 @@ function selectCheck() {
                 if (checker(i, checklist[g]) == 1) {
                     if (okiteasist == 1) {
                         field[i] = -3
+                        skip = 0;
                     }
                     goodcell.push(i);
-
                 }
-
-
-
             }
+        }
+    }
+    if (goodcell.length == 0) {
+        if (skip == 0) {
+            state = 2;
+            console.log(100)
+        }else{
+            state = 3;
         }
     }
 }
@@ -164,6 +265,13 @@ function checker(i, angle) {
     }
 
     return 0;
+}
+
+function changeturn() {
+    if (selectcell != 0 || (state == 2&&skip == 0)) {
+        turn = abs(turn - 1);
+        selectcell = 0;
+    }
 }
 
 function windowResized() {
