@@ -15,8 +15,10 @@ let skip = 0;
 let stop = 0;
 let selectcell = 0;
 let mouselp = 0;
+let histry = [];
+let wcount, bcount, ncount;
 
-
+//p5.jsの初期化関数
 function setup() {
     createCanvas(windowWidth, windowHeight);
     cellSizeSetter();
@@ -24,10 +26,11 @@ function setup() {
     textAlign(CENTER,CENTER);
 }
 
+//p5.jsのメインループ
 function draw() {
-    console.log(turn)
     mouse();
     background("green");
+            countstone();
     // cell();
     switch (state) {
         case 0:
@@ -58,6 +61,14 @@ function draw() {
             text("SKIP", windowWidth/2, windowHeight/2);
         
     }
+    if(state == 5){
+            fill(255);
+            rect(windowWidth/2-75, windowHeight/2-50, 150, 100, 30);
+            fill(0);
+            textSize(30);
+            text("Finish!", windowWidth/2, windowHeight/2);
+
+    }
     changeturn();
     /*
     if (skip == 1) {
@@ -71,6 +82,7 @@ function draw() {
 
 }
 
+//盤面作成
 function genField() {
     for (let i = 0; i < 8; i++) {
         field.push(-2);
@@ -85,6 +97,7 @@ function genField() {
     field[45] = 1;
 }
 
+//背景グリッド(未使用)
 function cell() {
     for (let i = 0; i < Math.floor(windowWidth / cellsize); i++) {
         for (let g = 0; g < Math.floor(windowHeight / cellsize); g++) {
@@ -101,6 +114,16 @@ function cell() {
     }
 }
 
+function countstone(){
+    wcount = field.filter((field) => field == 1).length;
+    bcount = field.filter((field) => field == 0).length;
+    ncount = field.filter((field) => field == -1).length;
+    if(wcount*bcount*ncount == 0){
+        state = 3;
+    }
+}
+
+//描画
 function stone() {
     strokeWeight(cellsize * 0.04);
     for (let i = 0; i < 8; i++) {
@@ -133,36 +156,36 @@ function stone() {
     }
 }
 
-
+//マウス位置のグリッド取得
 function mouse() {
     x = Math.floor((mouseX - xs) / cellsize);
     y = Math.floor((mouseY - ys) / cellsize);
 }
 
+//クリック時のマス取得
 function getSelect(){
     if(mouselp == 1){
         mouselp = 0;
-    if (keyIsPressed == true) {
-        switch (key) {
-            case 0:
+        switch (Number(key)) {
+            case 2:
                 field[x + y * 10 + 1] = 0;
-                console.log(1)
+                console.log(145)
+                break;
             case 1:
                 field[x + y * 10 + 1] = 1;
-                console.log(1)
+                console.log(154)
+                break;
             default:
                 selectcell = x + y * 10 + 1
         }
-    } else {
-        selectcell = x + y * 10 + 1
-
-    }
 
     }
 }
 
+//マウスのクリック感知
 function mouseReleased() {
     mouselp = 1;
+    console.log(505)
 
     /*
     if (keyIsPressed == true) {
@@ -195,17 +218,14 @@ function mouseReleased() {
          */
 }
 
-// function mouseReleased(){
-    // mouselp = 0;
-// }
-
-
+//クリック時のマス変更
 function Cellchanger() {
     if (selectcell != 0) {
         selectCell(selectcell);
     }
 }
 
+//
 function selectCell(temp) {
     if (goodcell.indexOf(temp) != -1) {
         befor = temp;
@@ -214,6 +234,7 @@ function selectCell(temp) {
         // turn = abs(turn - 1);
         goodcell = [];
         // console.log("change colect!!");
+        histry.push(temp);
     } else {
         selectcell = 0;
         // console.log("change faild");
@@ -247,7 +268,6 @@ function selectCheck() {
     if (goodcell.length == 0) {
         if (skip == 0) {
             state = 2;
-            console.log(100)
         }else{
             state = 3;
         }
