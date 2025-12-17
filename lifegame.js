@@ -57,11 +57,13 @@ function clicked() {
     }else{
         if(mp == 1){
         state = abs(state -1 );
+        console.log(12);
         }
     }
     } else {
         color = -1;
     }
+    mp = mp * 2;
 }
 
 function mousePressed() {
