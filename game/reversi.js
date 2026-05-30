@@ -23,14 +23,14 @@ function setup() {
     createCanvas(windowWidth, windowHeight);
     cellSizeSetter();
     genField();
-    textAlign(CENTER,CENTER);
+    textAlign(CENTER, CENTER);
 }
 
 //p5.jsのメインループ
 function draw() {
     mouse();
     background("green");
-            countstone();
+    countstone();
     // cell();
     switch (state) {
         case 0:
@@ -49,24 +49,24 @@ function draw() {
                 state = 0;
             }
             break;
-            case 3:
-                break;
+        case 3:
+            break;
     }
     stone();
-    if(state == 2){
-            fill(255);
-            rect(windowWidth/2-75, windowHeight/2-50, 150, 100, 30);
-            fill(0);
-            textSize(30);
-            text("SKIP", windowWidth/2, windowHeight/2);
-        
+    if (state == 2) {
+        fill(255);
+        rect(windowWidth / 2 - 75, windowHeight / 2 - 50, 150, 100, 30);
+        fill(0);
+        textSize(30);
+        text("SKIP", windowWidth / 2, windowHeight / 2);
+
     }
-    if(state == 5){
-            fill(255);
-            rect(windowWidth/2-75, windowHeight/2-50, 150, 100, 30);
-            fill(0);
-            textSize(30);
-            text("Finish!", windowWidth/2, windowHeight/2);
+    if (state == 5) {
+        fill(255);
+        rect(windowWidth / 2 - 75, windowHeight / 2 - 50, 150, 100, 30);
+        fill(0);
+        textSize(30);
+        text("Finish!", windowWidth / 2, windowHeight / 2);
 
     }
     changeturn();
@@ -114,11 +114,11 @@ function cell() {
     }
 }
 
-function countstone(){
+function countstone() {
     wcount = field.filter((field) => field == 1).length;
     bcount = field.filter((field) => field == 0).length;
     ncount = field.filter((field) => field == -1).length;
-    if(wcount*bcount*ncount == 0){
+    if (wcount * bcount * ncount == 0) {
         state = 3;
     }
 }
@@ -163,8 +163,8 @@ function mouse() {
 }
 
 //クリック時のマス取得
-function getSelect(){
-    if(mouselp == 1){
+function getSelect() {
+    if (mouselp == 1) {
         mouselp = 0;
         switch (Number(key)) {
             case 2:
@@ -268,7 +268,7 @@ function selectCheck() {
     if (goodcell.length == 0) {
         if (skip == 0) {
             state = 2;
-        }else{
+        } else {
             state = 3;
         }
     }
@@ -288,7 +288,7 @@ function checker(i, angle) {
 }
 
 function changeturn() {
-    if (selectcell != 0 || (state == 2&&skip == 0)) {
+    if (selectcell != 0 || (state == 2 && skip == 0)) {
         turn = abs(turn - 1);
         selectcell = 0;
     }

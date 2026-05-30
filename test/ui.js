@@ -17,6 +17,7 @@ function draw() {
 
 function aa() {
     temp = t / 100 % 1;
+    type = floor(t/100%2);
     // rect(0, 0, easing(, 5, 2) * 100);
     for(let i = 0; i < 10 ; i++){
         for(let g = 1; g < 4; g++){
