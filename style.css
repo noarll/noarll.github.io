@@ -6,6 +6,7 @@
     --link-hover-color: darkblue;
     --link-visited-color: purple;
     --link-active-color: red;
+    --header-text-color: white;
 }
 
 @media (prefers-color-scheme: dark) {
@@ -17,6 +18,7 @@
         --link-hover-color: cyan;
         --link-visited-color: lightpurple;
         --link-active-color: lightred;
+        --header-text-color: white;
     }
 }
 
@@ -61,7 +63,7 @@ header nav {
 header nav a:link, header nav a:visited, header nav a:hover, header nav a:active {
     display: flex;
     gap: 1rem;
-    color: var(--text-color);
+    color: var(--header-text-color);
     text-decoration: none;
     margin: 5px;
 }
